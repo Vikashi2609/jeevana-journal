@@ -24,16 +24,12 @@ export function PageStage({ children, zoom = 1 }: { children: ReactNode; zoom?: 
 
   return (
     <div ref={ref} className="w-full overflow-auto">
+      {/* `zoom` keeps the scaled pages in normal flow so the container height is correct. */}
       <div
         className="page-stage mx-auto flex flex-col items-center gap-6"
-        style={{ width: `${PAGE_W * s}px` }}
+        style={{ zoom: s, width: `${PAGE_W}px` }}
       >
-        <div
-          className="page-stage-inner flex flex-col items-center gap-6"
-          style={{ transform: `scale(${s})`, transformOrigin: "top center", width: `${PAGE_W}px` }}
-        >
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
