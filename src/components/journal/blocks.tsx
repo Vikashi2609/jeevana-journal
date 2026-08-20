@@ -63,7 +63,7 @@ function ArticleHeader({ article, index }: { article: Article; index: number }) 
         Article {index + 1}
       </div>
       <h2 style={{ fontSize: "22px", fontWeight: 700, margin: "4px 0 6px", lineHeight: 1.25 }}>{article.title}</h2>
-      {meta && <div style={{ fontSize: "12px", fontStyle: "italic", color: "#4a4views" as never }}>{meta}</div>}
+      {meta && <div style={{ fontSize: "12px", fontStyle: "italic", color: "#4a453d" }}>{meta}</div>}
     </div>
   );
 }
