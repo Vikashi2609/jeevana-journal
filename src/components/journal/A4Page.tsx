@@ -14,7 +14,7 @@ interface Props {
   period: string;
   pageNumber: number;
   totalPages: number;
-  bare?: boolean; // cover page: no header/footer
+  bare?: boolean | undefined; // cover page: no header/footer
 }
 
 export function A4Page({ children, journalTitle, period, pageNumber, totalPages, bare }: Props) {
