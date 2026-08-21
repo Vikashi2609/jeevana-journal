@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JournalNewRouteImport } from './routes/journal.new'
 import { Route as JournalIdIndexRouteImport } from './routes/journal.$id.index'
+import { Route as JournalIdFlipbookRouteImport } from './routes/journal.$id.flipbook'
 import { Route as JournalIdPreviewRouteImport } from './routes/journal.$id.preview'
 import { Route as JournalIdSettingsRouteImport } from './routes/journal.$id.settings'
 
@@ -30,6 +31,11 @@ const JournalIdIndexRoute = JournalIdIndexRouteImport.update({
   path: '/journal/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalIdFlipbookRoute = JournalIdFlipbookRouteImport.update({
+  id: '/journal/$id/flipbook',
+  path: '/journal/$id/flipbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JournalIdPreviewRoute = JournalIdPreviewRouteImport.update({
   id: '/journal/$id/preview',
   path: '/journal/$id/preview',
@@ -44,6 +50,7 @@ const JournalIdSettingsRoute = JournalIdSettingsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
   '/journal/$id/preview': typeof JournalIdPreviewRoute
   '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id/': typeof JournalIdIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
   '/journal/$id/preview': typeof JournalIdPreviewRoute
   '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id': typeof JournalIdIndexRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
   '/journal/$id/preview': typeof JournalIdPreviewRoute
   '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id/': typeof JournalIdIndexRoute
@@ -68,6 +77,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/journal/new'
+    | '/journal/$id/flipbook'
     | '/journal/$id/preview'
     | '/journal/$id/settings'
     | '/journal/$id/'
@@ -75,6 +85,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/journal/new'
+    | '/journal/$id/flipbook'
     | '/journal/$id/preview'
     | '/journal/$id/settings'
     | '/journal/$id'
@@ -82,6 +93,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/journal/new'
+    | '/journal/$id/flipbook'
     | '/journal/$id/preview'
     | '/journal/$id/settings'
     | '/journal/$id/'
@@ -90,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JournalNewRoute: typeof JournalNewRoute
+  JournalIdFlipbookRoute: typeof JournalIdFlipbookRoute
   JournalIdPreviewRoute: typeof JournalIdPreviewRoute
   JournalIdSettingsRoute: typeof JournalIdSettingsRoute
   JournalIdIndexRoute: typeof JournalIdIndexRoute
@@ -118,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal/$id/flipbook': {
+      id: '/journal/$id/flipbook'
+      path: '/journal/$id/flipbook'
+      fullPath: '/journal/$id/flipbook'
+      preLoaderRoute: typeof JournalIdFlipbookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/journal/$id/preview': {
       id: '/journal/$id/preview'
       path: '/journal/$id/preview'
@@ -138,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JournalNewRoute: JournalNewRoute,
+  JournalIdFlipbookRoute: JournalIdFlipbookRoute,
   JournalIdPreviewRoute: JournalIdPreviewRoute,
   JournalIdSettingsRoute: JournalIdSettingsRoute,
   JournalIdIndexRoute: JournalIdIndexRoute,
