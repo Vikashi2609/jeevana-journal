@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JournalNewRouteImport } from './routes/journal.new'
 import { Route as JournalIdIndexRouteImport } from './routes/journal.$id.index'
+import { Route as JournalIdSettingsRouteImport } from './routes/journal.$id.settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,34 +29,48 @@ const JournalIdIndexRoute = JournalIdIndexRouteImport.update({
   path: '/journal/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalIdSettingsRoute = JournalIdSettingsRouteImport.update({
+  id: '/journal/$id/settings',
+  path: '/journal/$id/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id/': typeof JournalIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id': typeof JournalIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id/': typeof JournalIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/journal/new' | '/journal/$id/'
+  fullPaths: '/' | '/journal/new' | '/journal/$id/settings' | '/journal/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/journal/new' | '/journal/$id'
-  id: '__root__' | '/' | '/journal/new' | '/journal/$id/'
+  to: '/' | '/journal/new' | '/journal/$id/settings' | '/journal/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/journal/new'
+    | '/journal/$id/settings'
+    | '/journal/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JournalNewRoute: typeof JournalNewRoute
+  JournalIdSettingsRoute: typeof JournalIdSettingsRoute
   JournalIdIndexRoute: typeof JournalIdIndexRoute
 }
 
@@ -82,12 +97,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal/$id/settings': {
+      id: '/journal/$id/settings'
+      path: '/journal/$id/settings'
+      fullPath: '/journal/$id/settings'
+      preLoaderRoute: typeof JournalIdSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JournalNewRoute: JournalNewRoute,
+  JournalIdSettingsRoute: JournalIdSettingsRoute,
   JournalIdIndexRoute: JournalIdIndexRoute,
 }
 export const routeTree = rootRouteImport
