@@ -38,7 +38,7 @@ function paginate(blocks: Block[], heights: number[]): Block[][] {
       pages.push([block]);
       return;
     }
-    const remaining = CONTENT_H - used;
+    const remaining = CONTENT_H - 6 - used;
     const needed = block.keepWithNext ? h + Math.min(140, heights[i + 1] ?? 0) : h;
     if (current.length > 0 && needed > remaining) flush();
     current.push(block);
