@@ -38,7 +38,7 @@ function paginate(blocks: Block[], heights: number[]): Block[][] {
       pages.push([block]);
       return;
     }
-    const remaining = CONTENT_H - used;
+    const remaining = CONTENT_H - 18 - used;
     const needed = block.keepWithNext ? h + Math.min(140, heights[i + 1] ?? 0) : h;
     if (current.length > 0 && needed > remaining) flush();
     current.push(block);
@@ -105,7 +105,7 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
       }}
     >
       {blocks.map((b) => (
-        <div key={b.key}>{b.node}</div>
+        <div key={b.key} className="jr-block">{b.node}</div>
       ))}
     </div>
   );
@@ -135,7 +135,7 @@ export function JournalPages({
         >
           <div className={className}>
             {blocks.map((b) => (
-              <div key={b.key}>{b.node}</div>
+              <div key={b.key} className="jr-block">{b.node}</div>
             ))}
           </div>
         </A4Page>

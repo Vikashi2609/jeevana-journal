@@ -27,7 +27,7 @@ export function PageStage({ children, zoom = 1 }: { children: ReactNode; zoom?: 
       {/* `zoom` keeps the scaled pages in normal flow so the container height is correct. */}
       <div
         className="page-stage mx-auto flex flex-col items-center gap-6"
-        style={{ zoom: s, width: `${PAGE_W}px` }}
+        style={{ ["--stage-zoom" as string]: String(s), width: `${PAGE_W}px` } as React.CSSProperties}
       >
         {children}
       </div>

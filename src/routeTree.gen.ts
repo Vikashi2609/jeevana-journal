@@ -10,33 +10,116 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as JournalNewRouteImport } from './routes/journal.new'
+import { Route as JournalIdIndexRouteImport } from './routes/journal.$id.index'
+import { Route as JournalIdFlipbookRouteImport } from './routes/journal.$id.flipbook'
+import { Route as JournalIdPreviewRouteImport } from './routes/journal.$id.preview'
+import { Route as JournalIdSettingsRouteImport } from './routes/journal.$id.settings'
+import { Route as JournalIdArticleArticleIdRouteImport } from './routes/journal.$id.article.$articleId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalNewRoute = JournalNewRouteImport.update({
+  id: '/journal/new',
+  path: '/journal/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIdIndexRoute = JournalIdIndexRouteImport.update({
+  id: '/journal/$id/',
+  path: '/journal/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIdFlipbookRoute = JournalIdFlipbookRouteImport.update({
+  id: '/journal/$id/flipbook',
+  path: '/journal/$id/flipbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIdPreviewRoute = JournalIdPreviewRouteImport.update({
+  id: '/journal/$id/preview',
+  path: '/journal/$id/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIdSettingsRoute = JournalIdSettingsRouteImport.update({
+  id: '/journal/$id/settings',
+  path: '/journal/$id/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIdArticleArticleIdRoute =
+  JournalIdArticleArticleIdRouteImport.update({
+    id: '/journal/$id/article/$articleId',
+    path: '/journal/$id/article/$articleId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/journal/new': typeof JournalNewRoute
+  '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
+  '/journal/$id/preview': typeof JournalIdPreviewRoute
+  '/journal/$id/settings': typeof JournalIdSettingsRoute
+  '/journal/$id/': typeof JournalIdIndexRoute
+  '/journal/$id/article/$articleId': typeof JournalIdArticleArticleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/journal/new': typeof JournalNewRoute
+  '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
+  '/journal/$id/preview': typeof JournalIdPreviewRoute
+  '/journal/$id/settings': typeof JournalIdSettingsRoute
+  '/journal/$id': typeof JournalIdIndexRoute
+  '/journal/$id/article/$articleId': typeof JournalIdArticleArticleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/journal/new': typeof JournalNewRoute
+  '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
+  '/journal/$id/preview': typeof JournalIdPreviewRoute
+  '/journal/$id/settings': typeof JournalIdSettingsRoute
+  '/journal/$id/': typeof JournalIdIndexRoute
+  '/journal/$id/article/$articleId': typeof JournalIdArticleArticleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/journal/new'
+    | '/journal/$id/flipbook'
+    | '/journal/$id/preview'
+    | '/journal/$id/settings'
+    | '/journal/$id/'
+    | '/journal/$id/article/$articleId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/journal/new'
+    | '/journal/$id/flipbook'
+    | '/journal/$id/preview'
+    | '/journal/$id/settings'
+    | '/journal/$id'
+    | '/journal/$id/article/$articleId'
+  id:
+    | '__root__'
+    | '/'
+    | '/journal/new'
+    | '/journal/$id/flipbook'
+    | '/journal/$id/preview'
+    | '/journal/$id/settings'
+    | '/journal/$id/'
+    | '/journal/$id/article/$articleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  JournalNewRoute: typeof JournalNewRoute
+  JournalIdFlipbookRoute: typeof JournalIdFlipbookRoute
+  JournalIdPreviewRoute: typeof JournalIdPreviewRoute
+  JournalIdSettingsRoute: typeof JournalIdSettingsRoute
+  JournalIdIndexRoute: typeof JournalIdIndexRoute
+  JournalIdArticleArticleIdRoute: typeof JournalIdArticleArticleIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +131,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal/new': {
+      id: '/journal/new'
+      path: '/journal/new'
+      fullPath: '/journal/new'
+      preLoaderRoute: typeof JournalNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/$id/': {
+      id: '/journal/$id/'
+      path: '/journal/$id'
+      fullPath: '/journal/$id/'
+      preLoaderRoute: typeof JournalIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/$id/flipbook': {
+      id: '/journal/$id/flipbook'
+      path: '/journal/$id/flipbook'
+      fullPath: '/journal/$id/flipbook'
+      preLoaderRoute: typeof JournalIdFlipbookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/$id/preview': {
+      id: '/journal/$id/preview'
+      path: '/journal/$id/preview'
+      fullPath: '/journal/$id/preview'
+      preLoaderRoute: typeof JournalIdPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/$id/settings': {
+      id: '/journal/$id/settings'
+      path: '/journal/$id/settings'
+      fullPath: '/journal/$id/settings'
+      preLoaderRoute: typeof JournalIdSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/$id/article/$articleId': {
+      id: '/journal/$id/article/$articleId'
+      path: '/journal/$id/article/$articleId'
+      fullPath: '/journal/$id/article/$articleId'
+      preLoaderRoute: typeof JournalIdArticleArticleIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  JournalNewRoute: JournalNewRoute,
+  JournalIdFlipbookRoute: JournalIdFlipbookRoute,
+  JournalIdPreviewRoute: JournalIdPreviewRoute,
+  JournalIdSettingsRoute: JournalIdSettingsRoute,
+  JournalIdIndexRoute: JournalIdIndexRoute,
+  JournalIdArticleArticleIdRoute: JournalIdArticleArticleIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
