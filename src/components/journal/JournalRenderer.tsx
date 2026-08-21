@@ -105,7 +105,7 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
       }}
     >
       {blocks.map((b) => (
-        <div key={b.key}>{b.node}</div>
+        <div key={b.key} className="jr-block">{b.node}</div>
       ))}
     </div>
   );
@@ -135,7 +135,7 @@ export function JournalPages({
         >
           <div className={className}>
             {blocks.map((b) => (
-              <div key={b.key}>{b.node}</div>
+              <div key={b.key} className="jr-block">{b.node}</div>
             ))}
           </div>
         </A4Page>

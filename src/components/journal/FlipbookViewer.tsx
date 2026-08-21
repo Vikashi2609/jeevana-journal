@@ -72,7 +72,7 @@ export function FlipbookViewer({ journal, pages }: { journal: Journal; pages: Bl
             bare={blocks[0]?.bare}
           >
             {blocks.map((b) => (
-              <div key={b.key}>{b.node}</div>
+              <div key={b.key} className="jr-block">{b.node}</div>
             ))}
           </A4Page>
         </div>
@@ -125,7 +125,7 @@ export function FlipbookViewer({ journal, pages }: { journal: Journal; pages: Bl
                 bare={p[0]?.bare}
               >
                 {p.map((b) => (
-                  <div key={b.key}>{b.node}</div>
+                  <div key={b.key} className="jr-block">{b.node}</div>
                 ))}
               </A4Page>
             </div>
