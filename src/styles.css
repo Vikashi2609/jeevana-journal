@@ -226,6 +226,12 @@
   .print-root * {
     visibility: visible !important;
   }
+  .print-root .page-stage {
+    zoom: 1 !important;
+    width: 210mm !important;
+    gap: 0 !important;
+    margin: 0 !important;
+  }
   .print-root {
     position: absolute !important;
     left: 0;
