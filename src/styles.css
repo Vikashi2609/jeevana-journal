@@ -186,6 +186,10 @@
   color: #9a9a9a;
 }
 
+.page-stage {
+  zoom: var(--stage-zoom, 1);
+}
+
 .jr-block {
   display: flow-root;
 }
@@ -227,6 +231,7 @@
     visibility: visible !important;
   }
   .print-root .page-stage {
+    --stage-zoom: 1 !important;
     zoom: 1 !important;
     width: 210mm !important;
     gap: 0 !important;
