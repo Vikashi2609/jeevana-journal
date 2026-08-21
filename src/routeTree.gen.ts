@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JournalNewRouteImport } from './routes/journal.new'
 import { Route as JournalIdIndexRouteImport } from './routes/journal.$id.index'
+import { Route as JournalIdPreviewRouteImport } from './routes/journal.$id.preview'
 import { Route as JournalIdSettingsRouteImport } from './routes/journal.$id.settings'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const JournalIdIndexRoute = JournalIdIndexRouteImport.update({
   path: '/journal/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalIdPreviewRoute = JournalIdPreviewRouteImport.update({
+  id: '/journal/$id/preview',
+  path: '/journal/$id/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JournalIdSettingsRoute = JournalIdSettingsRouteImport.update({
   id: '/journal/$id/settings',
   path: '/journal/$id/settings',
@@ -38,12 +44,14 @@ const JournalIdSettingsRoute = JournalIdSettingsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/preview': typeof JournalIdPreviewRoute
   '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id/': typeof JournalIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/preview': typeof JournalIdPreviewRoute
   '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id': typeof JournalIdIndexRoute
 }
@@ -51,18 +59,30 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/journal/new': typeof JournalNewRoute
+  '/journal/$id/preview': typeof JournalIdPreviewRoute
   '/journal/$id/settings': typeof JournalIdSettingsRoute
   '/journal/$id/': typeof JournalIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/journal/new' | '/journal/$id/settings' | '/journal/$id/'
+  fullPaths:
+    | '/'
+    | '/journal/new'
+    | '/journal/$id/preview'
+    | '/journal/$id/settings'
+    | '/journal/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/journal/new' | '/journal/$id/settings' | '/journal/$id'
+  to:
+    | '/'
+    | '/journal/new'
+    | '/journal/$id/preview'
+    | '/journal/$id/settings'
+    | '/journal/$id'
   id:
     | '__root__'
     | '/'
     | '/journal/new'
+    | '/journal/$id/preview'
     | '/journal/$id/settings'
     | '/journal/$id/'
   fileRoutesById: FileRoutesById
@@ -70,6 +90,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JournalNewRoute: typeof JournalNewRoute
+  JournalIdPreviewRoute: typeof JournalIdPreviewRoute
   JournalIdSettingsRoute: typeof JournalIdSettingsRoute
   JournalIdIndexRoute: typeof JournalIdIndexRoute
 }
@@ -97,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal/$id/preview': {
+      id: '/journal/$id/preview'
+      path: '/journal/$id/preview'
+      fullPath: '/journal/$id/preview'
+      preLoaderRoute: typeof JournalIdPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/journal/$id/settings': {
       id: '/journal/$id/settings'
       path: '/journal/$id/settings'
@@ -110,6 +138,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JournalNewRoute: JournalNewRoute,
+  JournalIdPreviewRoute: JournalIdPreviewRoute,
   JournalIdSettingsRoute: JournalIdSettingsRoute,
   JournalIdIndexRoute: JournalIdIndexRoute,
 }
