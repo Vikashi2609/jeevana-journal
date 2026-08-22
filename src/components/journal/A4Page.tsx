@@ -65,9 +65,11 @@ export function A4Page({ children, journalTitle, period, pageNumber, totalPages,
         style={{
           flex: "1 1 auto",
           paddingTop: bare ? 0 : "14px",
-          overflow: "visible",
+          overflow: "hidden",
+          minHeight: 0,
         }}
       >
+
         {children}
       </div>
       {!bare && (
