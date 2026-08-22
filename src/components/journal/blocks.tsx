@@ -195,7 +195,7 @@ export function buildBlocks(journal: Journal, images: Record<string, string>): B
   journal.articles.forEach((article, index) => {
     blocks.push({
       key: `${article.id}-head`,
-      startsPage: index === 0 ? true : undefined,
+      ...(index === 0 ? { startsPage: true } : {}),
       keepWithNext: true,
       node: <ArticleHeader article={article} index={index} />,
     });
