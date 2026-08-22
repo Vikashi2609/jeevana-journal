@@ -4,7 +4,7 @@ import { useImages } from "@/lib/store";
 import type { Journal } from "@/lib/types";
 
 import { A4Page, CONTENT_H, CONTENT_W } from "./A4Page";
-import { buildBlocks, splitHtmlBlock, type Block } from "./blocks";
+import { buildBlocks, HtmlBlock, splitHtmlBlock, type Block } from "./blocks";
 
 /** Usable flow height on a page (small safety margin against sub-pixel rounding). */
 const MAX_H = CONTENT_H - 18;
@@ -83,13 +83,9 @@ function splitOversized(blocks: Block[], heights: number[]): Block[] | null {
 }
 
 function HtmlFragment({ html }: { html: string }) {
-  return <HtmlBlockLike html={html} />;
+  return <HtmlBlock html={html} />;
 }
 
-/** Mirrors the prose rendering used by blocks.tsx so split halves look identical. */
-function HtmlBlockLike({ html }: { html: string }) {
-  return <div className="jr-prose" dangerouslySetInnerHTML={{ __html: html }} />;
-}
 
 export interface RenderedPages {
   pages: Block[][];

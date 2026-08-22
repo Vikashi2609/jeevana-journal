@@ -106,7 +106,7 @@ export function splitHtmlBlock(html: string): [string, string] | null {
 }
 
 
-function HtmlBlock({ html }: { html: string }) {
+export function HtmlBlock({ html }: { html: string }) {
   return (
     <div
       className="jr-prose"
