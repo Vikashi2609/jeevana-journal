@@ -4,7 +4,10 @@ import { useImages } from "@/lib/store";
 import type { Journal } from "@/lib/types";
 
 import { A4Page, CONTENT_H, CONTENT_W } from "./A4Page";
-import { buildBlocks, type Block } from "./blocks";
+import { buildBlocks, splitHtmlBlock, type Block } from "./blocks";
+
+/** Usable flow height on a page (small safety margin against sub-pixel rounding). */
+const MAX_H = CONTENT_H - 18;
 
 async function waitForImages(root: HTMLElement) {
   const imgs = Array.from(root.querySelectorAll("img"));
@@ -38,7 +41,8 @@ function paginate(blocks: Block[], heights: number[]): Block[][] {
       pages.push([block]);
       return;
     }
-    const remaining = CONTENT_H - 18 - used;
+    if (block.startsPage) flush();
+    const remaining = MAX_H - used;
     const needed = block.keepWithNext ? h + Math.min(140, heights[i + 1] ?? 0) : h;
     if (current.length > 0 && needed > remaining) flush();
     current.push(block);
@@ -46,6 +50,45 @@ function paginate(blocks: Block[], heights: number[]): Block[][] {
   });
   flush();
   return pages.length ? pages : [[]];
+}
+
+/**
+ * Splits any measured block that is taller than a single page into two blocks.
+ * Returns null when nothing could be split further (measurement is stable).
+ */
+function splitOversized(blocks: Block[], heights: number[]): Block[] | null {
+  let changed = false;
+  const out: Block[] = [];
+  blocks.forEach((block, i) => {
+    const h = heights[i] ?? 0;
+    if (!block.full && h > MAX_H && block.html) {
+      const halves = splitHtmlBlock(block.html);
+      if (halves) {
+        changed = true;
+        halves.forEach((html, j) => {
+          out.push({
+            ...block,
+            key: `${block.key}.${j}`,
+            html,
+            node: <HtmlFragment html={html} />,
+            ...(j > 0 ? { keepWithNext: false, startsPage: false } : {}),
+          });
+        });
+        return;
+      }
+    }
+    out.push(block);
+  });
+  return changed ? out : null;
+}
+
+function HtmlFragment({ html }: { html: string }) {
+  return <HtmlBlockLike html={html} />;
+}
+
+/** Mirrors the prose rendering used by blocks.tsx so split halves look identical. */
+function HtmlBlockLike({ html }: { html: string }) {
+  return <div className="jr-prose" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 export interface RenderedPages {
@@ -68,12 +111,19 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
   const { images, ready: imagesReady } = useImages(ids);
   const blocks = useMemo(() => (journal ? buildBlocks(journal, images) : []), [journal, images]);
   const ref = useRef<HTMLDivElement | null>(null);
+  const [items, setItems] = useState<Block[]>(blocks);
   const [pages, setPages] = useState<Block[][] | null>(null);
+  const passRef = useRef(0);
+
+  useEffect(() => {
+    passRef.current = 0;
+    setPages(null);
+    setItems(blocks);
+  }, [blocks]);
 
   useEffect(() => {
     let alive = true;
-    setPages(null);
-    if (!journal || !imagesReady) return;
+    if (!journal || !imagesReady || !items.length) return;
     const node = ref.current;
     if (!node) return;
     (async () => {
@@ -82,12 +132,20 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
       if (!alive) return;
       const children = Array.from(node.children) as HTMLElement[];
       const heights = children.map((c) => c.getBoundingClientRect().height);
-      setPages(paginate(blocks, heights));
+      if (passRef.current < 24) {
+        const split = splitOversized(items, heights);
+        if (split) {
+          passRef.current += 1;
+          setItems(split);
+          return;
+        }
+      }
+      setPages(paginate(items, heights));
     })();
     return () => {
       alive = false;
     };
-  }, [blocks, journal, imagesReady]);
+  }, [items, journal, imagesReady]);
 
   const measurer = (
     <div
@@ -104,7 +162,7 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
         fontFamily: 'Georgia, "Times New Roman", serif',
       }}
     >
-      {blocks.map((b) => (
+      {items.map((b) => (
         <div key={b.key} className="jr-block">{b.node}</div>
       ))}
     </div>
@@ -112,6 +170,7 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
 
   return { pages: pages ?? [], ready: pages !== null, measurer };
 }
+
 
 export function JournalPages({
   journal,
