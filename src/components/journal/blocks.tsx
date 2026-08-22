@@ -177,22 +177,25 @@ export function buildBlocks(journal: Journal, images: Record<string, string>): B
 
   if (journal.editorsNote && journal.editorsNote.replace(/<[^>]+>/g, "").trim()) {
     blocks.push({
-      key: "note",
-      full: true,
+      key: "note-head",
+      startsPage: true,
+      keepWithNext: true,
       node: (
-        <div>
-          <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "12px", borderBottom: "2px solid #2c2a26", paddingBottom: "6px" }}>
-            Editor&apos;s Note
-          </h2>
-          <HtmlBlock html={journal.editorsNote} />
-        </div>
+        <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "12px", borderBottom: "2px solid #2c2a26", paddingBottom: "6px" }}>
+          Editor&apos;s Note
+        </h2>
       ),
     });
+    splitHtml(journal.editorsNote).forEach((html, i) => {
+      blocks.push({ key: `note-c-${i}`, html, node: <HtmlBlock html={html} /> });
+    });
+    blocks.push({ key: "note-end", node: <div style={{ height: "22px" }} /> });
   }
 
   journal.articles.forEach((article, index) => {
     blocks.push({
       key: `${article.id}-head`,
+      startsPage: index === 0 ? true : undefined,
       keepWithNext: true,
       node: <ArticleHeader article={article} index={index} />,
     });
@@ -205,8 +208,9 @@ export function buildBlocks(journal: Journal, images: Record<string, string>): B
     });
 
     splitHtml(article.content).forEach((html, i) => {
-      blocks.push({ key: `${article.id}-c-${i}`, node: <HtmlBlock html={html} /> });
+      blocks.push({ key: `${article.id}-c-${i}`, html, node: <HtmlBlock html={html} /> });
     });
+
 
     blocks.push({
       key: `${article.id}-end`,
