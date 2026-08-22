@@ -8,11 +8,15 @@ import { PhotoRow, photoRows } from "./PhotoGallery";
 export interface Block {
   key: string;
   node: ReactNode;
-  /** Occupies a whole page on its own (cover, editor's note). */
+  /** Occupies a whole page on its own (cover). */
   full?: boolean;
+  /** Always begins a fresh page. */
+  startsPage?: boolean;
   /** Avoid leaving this block alone at the bottom of a page. */
   keepWithNext?: boolean;
   bare?: boolean;
+  /** Raw HTML for flowable text blocks — enables splitting oversized blocks. */
+  html?: string;
 }
 
 const BLOCK_TAGS = /<(p|h1|h2|h3|h4|ul|ol|blockquote|pre)\b[^>]*>[\s\S]*?<\/\1>/gi;
@@ -45,6 +49,62 @@ export function splitHtml(html: string): string[] {
   }
   return out;
 }
+
+const LIST_ITEMS = /<li\b[^>]*>[\s\S]*?<\/li>/gi;
+
+/**
+ * Splits one HTML block into two roughly equal halves so an oversized block can
+ * continue on the next page instead of being clipped. Returns null when the
+ * block can no longer be divided.
+ */
+export function splitHtmlBlock(html: string): [string, string] | null {
+  const listMatch = /^<(ul|ol)\b([^>]*)>([\s\S]*)<\/\1>$/i.exec(html.trim());
+  if (listMatch) {
+    const tag = listMatch[1]!;
+    const attrs = listMatch[2] ?? "";
+    const items = (listMatch[3] ?? "").match(LIST_ITEMS);
+    if (items && items.length > 1) {
+      const mid = Math.ceil(items.length / 2);
+      return [
+        `<${tag}${attrs}>${items.slice(0, mid).join("")}</${tag}>`,
+        `<${tag}${attrs}>${items.slice(mid).join("")}</${tag}>`,
+      ];
+    }
+    return null;
+  }
+
+  const tagMatch = /^<([a-z0-9]+)\b([^>]*)>([\s\S]*)<\/\1>$/i.exec(html.trim());
+  const tag = tagMatch ? tagMatch[1]! : "p";
+  const attrs = tagMatch ? (tagMatch[2] ?? "") : "";
+  const inner = (tagMatch ? (tagMatch[3] ?? "") : html).trim();
+  if (!inner) return null;
+
+  const wrap = (a: string, b: string): [string, string] => [
+    `<${tag}${attrs}>${a.trim()}</${tag}>`,
+    `<${tag}${attrs}>${b.trim()}</${tag}>`,
+  ];
+
+  const splitAt = (parts: string[], joiner: string): [string, string] | null => {
+    if (parts.length < 2) return null;
+    const total = parts.reduce((n, p) => n + p.length, 0);
+    let acc = 0;
+    let cut = 0;
+    for (let i = 0; i < parts.length - 1; i += 1) {
+      acc += parts[i]!.length + joiner.length;
+      cut = i + 1;
+      if (acc >= total / 2) break;
+    }
+    return wrap(parts.slice(0, cut).join(joiner), parts.slice(cut).join(joiner));
+  };
+
+  const sentences = inner.split(/(?<=[.!?])\s+/).filter(Boolean);
+  const bySentence = splitAt(sentences, " ");
+  if (bySentence) return bySentence;
+
+  const words = inner.split(/\s+/).filter(Boolean);
+  return splitAt(words, " ");
+}
+
 
 function HtmlBlock({ html }: { html: string }) {
   return (
