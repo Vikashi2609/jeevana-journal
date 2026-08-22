@@ -24,32 +24,71 @@ const BLOCK_TAGS = /<(p|h1|h2|h3|h4|ul|ol|blockquote|pre)\b[^>]*>[\s\S]*?<\/\1>/
 function textLength(html: string) {
   return html.replace(/<[^>]+>/g, "").length;
 }
-
-/** Splits article HTML into flowable blocks; very long paragraphs are chunked. */
+/** Splits article HTML into flowable blocks; preserves loose text and chunks very long paragraphs. */
 export function splitHtml(html: string): string[] {
-  const matches = html.match(BLOCK_TAGS);
-  const raw = matches && matches.length ? matches : [`<p>${html}</p>`];
   const out: string[] = [];
-  for (const block of raw) {
+
+  // Walk through the HTML sequentially so text outside recognised
+  // block tags is never silently discarded.
+  const blockRegex = new RegExp(BLOCK_TAGS.source, "gi");
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = blockRegex.exec(html)) !== null) {
+    const before = html.slice(lastIndex, match.index).trim();
+
+    if (before) {
+      out.push(`<p>${before}</p>`);
+    }
+
+    out.push(match[0]);
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Preserve anything after the final recognised block.
+  const after = html.slice(lastIndex).trim();
+
+  if (after) {
+    out.push(`<p>${after}</p>`);
+  }
+
+  // If there were no recognised blocks at all, preserve the entire input.
+  if (out.length === 0 && html.trim()) {
+    out.push(`<p>${html.trim()}</p>`);
+  }
+
+  // Chunk very long paragraphs.
+  const chunked: string[] = [];
+
+  for (const block of out) {
     if (textLength(block) < 900 || !/^<p\b/i.test(block)) {
-      out.push(block);
+      chunked.push(block);
       continue;
     }
-    const inner = block.replace(/^<p[^>]*>/i, "").replace(/<\/p>$/i, "");
+
+    const inner = block
+      .replace(/^<p[^>]*>/i, "")
+      .replace(/<\/p>$/i, "");
+
     const sentences = inner.split(/(?<=[.!?])\s+/);
     let buf = "";
-    for (const s of sentences) {
-      if (textLength(buf) + s.length > 700 && buf) {
-        out.push(`<p>${buf.trim()}</p>`);
+
+    for (const sentence of sentences) {
+      if (textLength(buf) + sentence.length > 700 && buf) {
+        chunked.push(`<p>${buf.trim()}</p>`);
         buf = "";
       }
-      buf += `${s} `;
-    }
-    if (buf.trim()) out.push(`<p>${buf.trim()}</p>`);
-  }
-  return out;
-}
 
+      buf += `${sentence} `;
+    }
+
+    if (buf.trim()) {
+      chunked.push(`<p>${buf.trim()}</p>`);
+    }
+  }
+
+  return chunked;
+}
 const LIST_ITEMS = /<li\b[^>]*>[\s\S]*?<\/li>/gi;
 
 /**
