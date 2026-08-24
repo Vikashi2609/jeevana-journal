@@ -19,6 +19,7 @@ interface Props {
   pageNumber: number;
   totalPages: number;
   bare?: boolean | undefined;
+  palette?: JournalPalette | undefined;
 }
 
 /* ---------------------------------------------------------
