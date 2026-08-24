@@ -1,4 +1,8 @@
 import type { ReactNode } from "react";
+import {
+  JournalBackground,
+  type JournalPalette,
+} from "./JournalBackground";
 
 export const PAGE_W = 794; // A4 portrait @96dpi
 export const PAGE_H = 1123;
