@@ -195,6 +195,7 @@ export function A4Page({
   pageNumber,
   totalPages,
   bare,
+  palette,
 }: Props) {
   return (
     <div
