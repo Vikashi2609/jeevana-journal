@@ -216,7 +216,7 @@ export function A4Page({
       }}
     >
       {/* Background sits behind everything */}
-      <JournalBackground />
+      <JournalBackground pageNumber={pageNumber} palette={palette} />
 
       {/* Header */}
       {!bare && (
