@@ -72,73 +72,79 @@ const H = 1123;
    COMPOSITIONS — flat geometry, generous negative space
 --------------------------------------------------------- */
 
+/* The live text column occupies roughly x 40–754, y 86–1050.
+   Compositions work the full-bleed margin ring and the page edges,
+   so artwork frames the typography instead of sitting under it. */
+
 function Composition0(c: Ink) {
-  // Large field entering top-right, tiny left accent, low colour strip
+  // Dominant field entering from the top-right, tiny left accent, low strip
   return (
     <>
-      <path d={`M ${W} 0 L ${W} 372 L 322 0 Z`} fill={c.c1} />
-      <rect x={0} y={0} width={W} height={0} fill="none" />
-      <rect x={64} y={286} width={26} height={26} fill={c.c3} />
-      <rect x={64} y={1006} width={318} height={10} fill={c.c2} />
+      <path d={`M ${W} 0 L ${W} 470 L 748 470 L 748 0 Z`} fill={c.c1} />
+      <path d={`M 748 0 L 748 96 L 596 0 Z`} fill={c.c1} />
+      <rect x={12} y={300} width={16} height={16} fill={c.c3} />
+      <rect x={0} y={1099} width={286} height={24} fill={c.c2} />
     </>
   );
 }
 
 function Composition1(c: Ink) {
-  // Strong vertical field left, mid rectangular field, tiny accent
+  // Strong vertical field along the left, secondary field at mid-right
   return (
     <>
-      <rect x={0} y={0} width={104} height={H} fill={c.c1} />
-      <rect x={452} y={392} width={342} height={286} fill={c.c2} />
-      <rect x={452} y={716} width={54} height={6} fill={c.c3} />
+      <rect x={0} y={0} width={30} height={H} fill={c.c1} />
+      <rect x={0} y={0} width={214} height={30} fill={c.c1} />
+      <rect x={758} y={352} width={36} height={330} fill={c.c2} />
+      <rect x={758} y={706} width={36} height={36} fill={c.c3} />
     </>
   );
 }
 
 function Composition2(c: Ink) {
-  // Horizontal band, top-right geometric element, narrow lower accent
+  // Horizontal band across the top, small top-right element, lower accent
   return (
     <>
-      <rect x={0} y={210} width={W} height={92} fill={c.c1} />
-      <path d={`M ${W} 0 L ${W} 150 L 644 0 Z`} fill={c.c2} />
-      <rect x={72} y={962} width={190} height={8} fill={c.c3} />
+      <rect x={0} y={0} width={W} height={22} fill={c.c1} />
+      <rect x={640} y={22} width={154} height={44} fill={c.c2} />
+      <rect x={400} y={1105} width={394} height={18} fill={c.c3} />
     </>
   );
 }
 
 function Composition3(c: Ink) {
-  // Quietest: one large flat block on one side
+  // The quietest page: one large flat block, otherwise untouched paper
   return (
     <>
-      <rect x={W - 232} y={0} width={232} height={604} fill={c.c1} />
-      <rect x={72} y={1044} width={64} height={6} fill={c.c3} />
+      <rect x={762} y={0} width={32} height={640} fill={c.c1} />
+      <rect x={40} y={1113} width={72} height={10} fill={c.c3} />
     </>
   );
 }
 
 function Composition4(c: Ink) {
-  // Asymmetric diagonal conversation: top-left to bottom-right
+  // Asymmetric: an L anchored top-left answered by mass at bottom-right
   return (
     <>
-      <path d={`M 0 0 L 396 0 L 0 322 Z`} fill={c.c1} />
-      <rect x={0} y={296} width={168} height={16} fill={c.c2} />
-      <rect x={470} y={834} width={324} height={289} fill={c.c2} />
-      <rect x={470} y={834} width={112} height={112} fill={c.c3} />
+      <rect x={0} y={0} width={26} height={430} fill={c.c1} />
+      <rect x={0} y={0} width={318} height={26} fill={c.c1} />
+      <rect x={768} y={742} width={26} height={381} fill={c.c2} />
+      <rect x={520} y={1097} width={274} height={26} fill={c.c2} />
+      <rect x={470} y={1097} width={26} height={26} fill={c.c3} />
     </>
   );
 }
 
 function Composition5(c: Ink) {
-  // Backing frame for a photograph / feature, two restrained accents
+  // A restrained backing area for a photograph or feature opening
   return (
     <>
-      <rect x={108} y={196} width={620} height={520} fill={c.c1} opacity={0.16} />
-      <rect x={108} y={196} width={620} height={14} fill={c.c1} />
-      <rect x={694} y={196} width={34} height={220} fill={c.c2} />
-      <rect x={108} y={1000} width={130} height={6} fill={c.c3} />
+      <rect x={0} y={150} width={34} height={620} fill={c.c1} />
+      <rect x={760} y={250} width={34} height={300} fill={c.c2} />
+      <rect x={760} y={574} width={34} height={14} fill={c.c3} />
     </>
   );
 }
+
 
 const COMPOSITIONS = [
   Composition0,
