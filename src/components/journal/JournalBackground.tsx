@@ -13,8 +13,8 @@ export type JournalPalette =
 
 export type JournalBackgroundProps = {
   pageNumber: number;
-  palette?: JournalPalette;
-  variant?: "editorial";
+  palette?: JournalPalette | undefined;
+  variant?: "editorial" | undefined;
 };
 
 const PAPER = "#F6F1E7";
