@@ -47,7 +47,7 @@ const PALETTES: Record<JournalPalette, Ink> = {
     c1: "#1E4C63", // deep blue
     c2: "#3E8C8A", // teal
     c3: "#E2705A", // coral
-    ink: "#22303А".replace("А", "A"),
+    ink: "#22303A",
   },
   bloom: {
     paper: "#F6EFF1",
