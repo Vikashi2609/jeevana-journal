@@ -1,0 +1,400 @@
+* {
+  box-sizing: border-box;
+}
+
+.preview-app {
+  min-height: 100vh;
+  background: #1d1d1b;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+/* ---------------------------
+   PALETTE BAR
+---------------------------- */
+
+.palette-bar {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  color: white;
+}
+
+.palette-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.palette-title span {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.palette-title small {
+  opacity: 0.45;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+}
+
+.palette-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.palette-buttons button {
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+
+  color: white;
+
+  padding: 8px 12px;
+  border-radius: 30px;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  cursor: pointer;
+  font-size: 11px;
+
+  transition: 0.2s ease;
+}
+
+.palette-buttons button:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.palette-buttons button.active {
+  background: white;
+  color: #222;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* ---------------------------
+   PAGE STAGE
+---------------------------- */
+
+.page-stage {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------------------------
+   A4 PAGE
+---------------------------- */
+
+.journal-page {
+  position: relative;
+
+  width: 794px;
+  height: 1123px;
+
+  overflow: hidden;
+
+  background: var(--paper);
+
+  color: var(--dark);
+
+  box-shadow:
+    0 25px 80px rgba(0,0,0,0.45);
+
+  isolation: isolate;
+}
+
+/* ---------------------------
+   PAPER GRAIN
+---------------------------- */
+
+.grain {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.2;
+
+  background-image:
+    radial-gradient(
+      rgba(30,30,30,0.16) 0.5px,
+      transparent 0.7px
+    );
+
+  background-size: 6px 6px;
+
+  z-index: 20;
+}
+
+/* ---------------------------
+   ABSTRACT SHAPES
+---------------------------- */
+
+.shape {
+  position: absolute;
+  pointer-events: none;
+}
+
+.shape-one {
+  width: 470px;
+  height: 470px;
+
+  right: -210px;
+  top: -170px;
+
+  background: var(--primary);
+
+  border-radius: 48% 52% 62% 38%;
+
+  transform: rotate(18deg);
+
+  opacity: 0.95;
+}
+
+.shape-two {
+  width: 300px;
+  height: 300px;
+
+  left: -160px;
+  bottom: 160px;
+
+  background: var(--secondary);
+
+  border-radius: 50%;
+
+  opacity: 0.95;
+}
+
+.shape-three {
+  width: 230px;
+  height: 230px;
+
+  right: -70px;
+  bottom: -70px;
+
+  background: var(--accent);
+
+  transform: rotate(25deg);
+
+  opacity: 0.9;
+}
+
+/* ---------------------------
+   HEADER
+---------------------------- */
+
+.top-line {
+  position: absolute;
+
+  top: 46px;
+  left: 52px;
+  right: 52px;
+
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 9px;
+  letter-spacing: 0.18em;
+
+  font-weight: 700;
+
+  z-index: 10;
+}
+
+/* ---------------------------
+   HERO
+---------------------------- */
+
+.hero-block {
+  position: absolute;
+
+  left: 72px;
+  top: 180px;
+
+  width: 420px;
+
+  z-index: 10;
+}
+
+.hero-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+
+  font-weight: 700;
+
+  color: var(--primary);
+
+  margin-bottom: 24px;
+}
+
+.hero-block h1 {
+  margin: 0;
+
+  font-family: Georgia, serif;
+
+  font-size: 78px;
+  line-height: 0.88;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 500;
+}
+
+.hero-block p {
+  width: 310px;
+
+  margin-top: 32px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 13px;
+  line-height: 1.65;
+
+  opacity: 0.72;
+}
+
+/* ---------------------------
+   PHOTO AREA
+---------------------------- */
+
+.image-placeholder {
+  position: absolute;
+
+  left: 72px;
+  right: 72px;
+
+  top: 535px;
+  height: 350px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--soft),
+      rgba(255,255,255,0.35)
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.image-placeholder span {
+  font-family: Arial, sans-serif;
+
+  font-size: 9px;
+
+  letter-spacing: 0.2em;
+
+  opacity: 0.35;
+}
+
+/* ---------------------------
+   BOTTOM
+---------------------------- */
+
+.bottom-block {
+  position: absolute;
+
+  left: 72px;
+  right: 72px;
+  bottom: 74px;
+
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  z-index: 10;
+}
+
+.small-label {
+  font-family: Arial, sans-serif;
+
+  font-size: 8px;
+
+  letter-spacing: 0.2em;
+
+  opacity: 0.5;
+}
+
+.bottom-block h2 {
+  margin: 8px 0 0;
+
+  font-family: Georgia, serif;
+
+  font-size: 27px;
+
+  font-weight: 500;
+}
+
+.number {
+  font-family: Georgia, serif;
+
+  font-size: 64px;
+
+  line-height: 0.8;
+
+  color: var(--primary);
+
+  opacity: 0.8;
+}
+
+/* ---------------------------
+   VERTICAL MARK
+---------------------------- */
+
+.vertical-text {
+  position: absolute;
+
+  right: 22px;
+  top: 440px;
+
+  writing-mode: vertical-rl;
+
+  font-size: 8px;
+
+  letter-spacing: 0.25em;
+
+  opacity: 0.45;
+
+  z-index: 10;
+}
+
+/* ---------------------------
+   RESPONSIVE
+---------------------------- */
+
+@media (max-width: 850px) {
+  .journal-page {
+    transform: scale(
+      min(
+        1,
+        calc((100vw - 48px) / 794)
+      )
+    );
+
+    transform-origin: top center;
+
+    margin-bottom: -200px;
+  }
+
+  .palette-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
