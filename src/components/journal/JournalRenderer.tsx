@@ -96,15 +96,26 @@ export interface RenderedPages {
  * Measures every block at true A4 content width and flows them onto pages.
  * The A4 preview, the flipbook and print all consume these same pages.
  */
-export function useJournalPages(journal: Journal | null): RenderedPages & { measurer: React.ReactNode } {
+export function useJournalPages(
+  journal: Journal | null,
+  /**
+   * Optional pre-resolved id -> src map. When provided, image resolution
+   * skips IndexedDB entirely (used by the Supabase-backed legacy view,
+   * whose photo ids are already public URLs). Existing callers that omit
+   * this keep resolving photos from IndexedDB exactly as before.
+   */
+  externalImages?: Record<string, string>,
+): RenderedPages & { measurer: React.ReactNode } {
   const ids = useMemo(() => {
-    if (!journal) return [];
+    if (!journal || externalImages) return [];
     const list = journal.articles.flatMap((a) => a.photos.map((p) => p.id));
     if (journal.coverImageId) list.push(journal.coverImageId);
     return list;
-  }, [journal]);
+  }, [journal, externalImages]);
 
-  const { images, ready: imagesReady } = useImages(ids);
+  const { images: dbImages, ready: dbImagesReady } = useImages(ids);
+  const images = externalImages ?? dbImages;
+  const imagesReady = externalImages ? true : dbImagesReady;
   const blocks = useMemo(() => (journal ? buildBlocks(journal, images) : []), [journal, images]);
   const ref = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<Block[]>(blocks);
@@ -158,9 +169,21 @@ export function useJournalPages(journal: Journal | null): RenderedPages & { meas
         fontFamily: 'Georgia, "Times New Roman", serif',
       }}
     >
-      {items.map((b) => (
-        <div key={b.key} className="jr-block">{b.node}</div>
-      ))}
+      {/*
+        IMPORTANT: this must mirror the real display markup exactly
+        (see JournalPages / FlipbookViewer's PageArtwork below), including
+        the .jr-content wrapper. .jr-content is where the body-text font
+        size, line-height, and heading rules live (see styles.css) — if
+        this measurer doesn't wrap blocks in it too, blocks get measured
+        at the browser's default font size but *displayed* at the real
+        (larger) one, so the page thinks less room is needed than it
+        actually is and text overflows past the page boundary.
+      */}
+      <div className="jr-content">
+        {items.map((b) => (
+          <div key={b.key} className="jr-block">{b.node}</div>
+        ))}
+      </div>
     </div>
   );
 
