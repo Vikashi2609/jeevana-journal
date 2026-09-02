@@ -618,11 +618,11 @@ const RenderPageContent: React.FC<{ page: PaginatedSheet; onOpenModal: () => voi
                     style={{
                       fontFamily: 'var(--app-font-serif, Georgia, serif)',
                       fontSize: '20px',
-                      fontWeight: 800,
+                      fontWeight: 900,
                       marginTop: '2px',
                       marginBottom: '8px',
                       lineHeight: '1.25',
-                      color: '#1a1a2e',
+                      color: '#000000',
                       borderBottom: '2px solid #f0e6df',
                       paddingBottom: '4px'
                     }}
@@ -694,7 +694,8 @@ const RenderPageContent: React.FC<{ page: PaginatedSheet; onOpenModal: () => voi
                     fontSize: '13px',
                     lineHeight: '1.6',
                     marginBottom: '8px',
-                    color: '#2d2d2d'
+                    color: '#1a1a1a',
+                    fontWeight: '500'
                   }}
                 >
                   {block.content}
@@ -705,21 +706,23 @@ const RenderPageContent: React.FC<{ page: PaginatedSheet; onOpenModal: () => voi
       </div>
 
       <div style={{ marginTop: 'auto', paddingTop: '8px' }}>
-        <button
-          className="read-more-btn"
-          onClick={onOpenModal}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#d67856',
-            fontWeight: 700,
-            fontSize: '11px',
-            cursor: 'pointer',
-            padding: 0
-          }}
-        >
-          Read Full Article
-        </button>
+        {!page.blocks.every((b: any) => b.type === 'image') && (
+          <button
+            className="read-more-btn"
+            onClick={onOpenModal}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#d67856',
+              fontWeight: 700,
+              fontSize: '11px',
+              cursor: 'pointer',
+              padding: 0
+            }}
+          >
+            Read Full Article
+          </button>
+        )}
       </div>
     </div>
   );
@@ -734,13 +737,13 @@ function renderBlocksToHTML(blocks: any[]): string {
       switch (b.type) {
         case 'heading':
           return `<div style="background: #fdeee9; color: #d67856; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; display: inline-block;">ACTIVITY</div>
-                  <h2 style="font-family: var(--app-font-serif, Georgia, serif); font-size: 18px; font-weight: 800; margin-top: 2px; margin-bottom: 6px; line-height: 1.2; color: #1a1a2e; border-bottom: 2px solid #f0e6df; padding-bottom: 4px;">${b.content || ''}</h2>`;
+                  <h2 style="font-family: var(--app-font-serif, Georgia, serif); font-size: 18px; font-weight: 900; margin-top: 2px; margin-bottom: 6px; line-height: 1.2; color: #000000; border-bottom: 2px solid #f0e6df; padding-bottom: 4px;">${b.content || ''}</h2>`;
         case 'quote':
           return `<blockquote style="font-style: italic; background: #fdf7f4; border-left: 3px solid #d67856; padding: 6px 10px; margin: 6px 0; color: #332c28; font-size: 12px; line-height: 1.4;">"${b.content || ''}"</blockquote>`;
         case 'image':
           return `<div style="margin: 6px 0; padding: 4px; background: #fef6f3; border: 1px solid #f3d0c2; border-radius: 6px; height: 150px;"></div>`;
         default:
-          return `<p class="jr-prose" style="font-family: var(--app-font-serif, Georgia, serif); font-size: 12.5px; line-height: 1.5; margin-bottom: 6px; color: #2d2d2d;">${b.content || ''}</p>`;
+          return `<p class="jr-prose" style="font-family: var(--app-font-serif, Georgia, serif); font-size: 12.5px; line-height: 1.5; margin-bottom: 6px; color: #1a1a1a; font-weight: 500;">${b.content || ''}</p>`;
       }
     })
     .join('');
