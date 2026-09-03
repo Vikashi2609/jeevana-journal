@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useJournal } from '@/lib/store';
-import { useJournalPages } from '@/hooks/useJournalPages';
 import FlipbookViewer from '@/components/journal/FlipbookViewer';
 import { A4Page } from '@/components/journal/A4Page';
 import { Suspense } from 'react';
