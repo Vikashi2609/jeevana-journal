@@ -5,7 +5,7 @@
  * that currently runs against it (journal_entries). No writes, no schema
  * changes, no service-role key here or anywhere in frontend code.
  */
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
@@ -22,4 +22,15 @@ if (!supabaseConfigured) {
   );
 }
 
-export const supabase = supabaseConfigured ? createClient(supabaseUrl!, supabaseAnonKey!) : null;
+// Preserve a single instance across Vite HMR reloads in development
+const globalForSupabase = globalThis as unknown as {
+  supabase?: SupabaseClient;
+};
+
+export const supabase =
+  globalForSupabase.supabase ??
+  (supabaseConfigured ? createClient(supabaseUrl!, supabaseAnonKey!) : null);
+
+if (import.meta.env.DEV && supabase) {
+  globalForSupabase.supabase = supabase;
+}

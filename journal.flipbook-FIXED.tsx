@@ -6,7 +6,7 @@ import FlipbookViewer from '@/components/journal/FlipbookViewer';
 import { A4Page } from '@/components/journal/A4Page';
 import { Suspense } from 'react';
 
-export const Route = createFileRoute('/journal/new')({
+export const Route = createFileRoute('/journal/$id/flipbook')({
   component: FlipbookRoute,
   meta: () => [
     {

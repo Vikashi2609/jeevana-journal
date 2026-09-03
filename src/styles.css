@@ -343,13 +343,14 @@
 }
 
 .jr-content {
-  height: 100%;
-  overflow: hidden;
   color: #26283b;
   display: flex;
   flex-direction: column;
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: Georgia, "Times New Roman", serif;
+  /* Remove: height: 100%; overflow: hidden; */
 }
-
 .jr-block {
   color: #26283b;
   break-inside: avoid;

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EditorRouteImport } from './routes/editor'
 import { Route as SupabaseTestRouteImport } from './routes/supabase-test'
 import { Route as JournalNewRouteImport } from './routes/journal.new'
 import { Route as JournalIdIndexRouteImport } from './routes/journal.$id.index'
@@ -21,6 +22,11 @@ import { Route as JournalIdArticleArticleIdRouteImport } from './routes/journal.
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorRoute = EditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SupabaseTestRoute = SupabaseTestRouteImport.update({
@@ -62,6 +68,7 @@ const JournalIdArticleArticleIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/supabase-test': typeof SupabaseTestRoute
   '/journal/new': typeof JournalNewRoute
   '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/supabase-test': typeof SupabaseTestRoute
   '/journal/new': typeof JournalNewRoute
   '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
@@ -83,6 +91,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/editor': typeof EditorRoute
   '/supabase-test': typeof SupabaseTestRoute
   '/journal/new': typeof JournalNewRoute
   '/journal/$id/flipbook': typeof JournalIdFlipbookRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/editor'
     | '/supabase-test'
     | '/journal/new'
     | '/journal/$id/flipbook'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/editor'
     | '/supabase-test'
     | '/journal/new'
     | '/journal/$id/flipbook'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/editor'
     | '/supabase-test'
     | '/journal/new'
     | '/journal/$id/flipbook'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EditorRoute: typeof EditorRoute
   SupabaseTestRoute: typeof SupabaseTestRoute
   JournalNewRoute: typeof JournalNewRoute
   JournalIdFlipbookRoute: typeof JournalIdFlipbookRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor': {
+      id: '/editor'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/supabase-test': {
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EditorRoute: EditorRoute,
   SupabaseTestRoute: SupabaseTestRoute,
   JournalNewRoute: JournalNewRoute,
   JournalIdFlipbookRoute: JournalIdFlipbookRoute,

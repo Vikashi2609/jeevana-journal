@@ -5,6 +5,7 @@ import type { Journal } from "@/lib/types";
 
 import { A4Page, CONTENT_H, CONTENT_W } from "./A4Page";
 import { buildBlocks, HtmlBlock, splitHtmlBlock, type Block } from "./blocks";
+import FlipbookViewer from "./FlipbookViewer";
 
 /** Usable flow height on a page (small safety margin against sub-pixel rounding). */
 const MAX_H = CONTENT_H - 18;
@@ -221,3 +222,45 @@ export function JournalPages({
     </>
   );
 }
+
+
+interface JournalRendererProps {
+  journal: Journal;
+}
+
+/**
+ * Wrapper component that:
+ * 1. Measures and paginates journal content via useJournalPages
+ * 2. Renders the flipbook viewer with paginated pages
+ */
+export function JournalRenderer({ journal }: JournalRendererProps) {
+  const { pages, ready, measurer } = useJournalPages(journal);
+
+  return (
+    <>
+      {/* Measurer MUST render unconditionally so useJournalPages can measure */}
+      {measurer}
+      
+      {/* Show flipbook only after measurement is complete */}
+      {ready ? (
+<FlipbookViewer
+  journalPages={pages.map((pageBlocks, i) => (
+    <div key={i} className="jr-content" style={{ padding: '32px 30px' }}>
+      {pageBlocks.map((block) => (
+        <div key={block.key}>{block.node}</div>
+      ))}
+    </div>
+  ))}
+          magazineTitle={journal.title}
+          issueName={`${journal.month} ${journal.year}`}
+        />
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+          <p>Loading pages...</p>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default JournalRenderer;

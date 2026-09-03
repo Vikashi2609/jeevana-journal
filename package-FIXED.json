@@ -1,0 +1,46 @@
+{
+  "name": "jeevana-journal",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Digital flipbook journal system for Jeevana School",
+  "type": "module",
+  "scripts": {
+    "dev": "tanstack-start dev",
+    "build": "tanstack-start build",
+    "start": "node dist/server.js",
+    "preview": "wrangler pages dev ./dist/public",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.1",
+    "@hookform/resolvers": "^3.4.0",
+    "@tanstack/react-form": "^0.38.1",
+    "@tanstack/react-query": "^5.57.0",
+    "@tanstack/react-router": "^1.61.0",
+    "@tanstack/start": "^1.61.0",
+    "isbot": "^4.1.1",
+    "lucide-react": "^0.454.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.2",
+    "sugar-high": "^0.6.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.43.4",
+    "@tanstack/router-devtools": "^1.61.0",
+    "@types/bun": "latest",
+    "@types/node": "^20.12.14",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.84.0"
+  },
+  "engines": {
+    "node": ">=20.12.0",
+    "bun": ">=1.0.0"
+  }
+}
